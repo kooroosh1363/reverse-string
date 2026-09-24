@@ -1,0 +1,38 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install --upgrade pip && python -m pip install -e .
+
+      - name: Compile Python
+        run: python -m compileall -q reverse_string tests reverse_str_1.py
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
