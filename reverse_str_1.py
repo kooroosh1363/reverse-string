@@ -1,7 +1,6 @@
-def txt(_str):
-    length = len(_str) -1 
-    for i in range(length,-1,-1):
-        print(_str[i], end="")
-    
-    
-Text = txt((input("please enter a text : ")))  
+"""Backward-compatible entry point for the original exercise filename."""
+
+from reverse_string.cli import main
+
+if __name__ == "__main__":
+    raise SystemExit(main())
